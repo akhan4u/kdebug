@@ -5,12 +5,12 @@ tags: [ kubernetes, k8s ]
 
 # Kubernetes Schema Validation
 
-# You can verify the schema by using the `dry-run` flag (`--dry-run=client/server`) when specifying the 
+# You can verify the schema by using the `dry-run` flag (`--dry-run=client/server`) when specifying the
 # `kubectl create` or `kubectl apply` commands, which will perform the validation without applying Kubernetes resources to the cluster.
 kubectl apply --dry-run=client
 kubectl apply --dry-run=server
 
-# KubeLinter is a static analysis tool that checks Kubernetes YAML files and Helm charts to 
+# KubeLinter is a static analysis tool that checks Kubernetes YAML files and Helm charts to
 # ensure the applications represented in them adhere to best practices. (https://github.com/stackrox/kube-linter)
 kube-linter lint pod.yaml
 
@@ -21,7 +21,7 @@ kubeconform fixtures/valid.yaml
 cat fixtures/valid.yaml  | kubeconform -summary
 
 # kubeval is a tool for validating a Kubernetes YAML or JSON configuration file.  (https://github.com/instrumenta/kubeval)
-# It does so using schemas generated from the Kubernetes OpenAPI specification, and therefore 
+# It does so using schemas generated from the Kubernetes OpenAPI specification, and therefore
 # can validate schemas for multiple versions of Kubernetes.
 # Kubeval is a more popular project than kubeconform
 kubeval my-invalid-rc.yaml

@@ -17,7 +17,7 @@ COPY bin/ /usr/local/bin/
 COPY bin/config.json /root/.bin/
 ADD bin/.krew /root/.krew
 ADD configs/.fzf /root/.fzf
-RUN mkdir -p /root/.config/cheat/cheatsheets/personal /root/.kube && \ 
+RUN mkdir -p /root/.config/cheat/cheatsheets/personal /root/.kube && \
         cd /root/.config/cheat/cheatsheets/ && \
             git clone https://github.com/cheat/cheatsheets.git community && \
                 cat '/usr/share/zoneinfo/Asia/Calcutta' > /etc/localtime

@@ -5,17 +5,17 @@ tags: [ troubleshooting, kubernetes, k8s ]
 
 # Kubernetes: ImagePullBackOff!
 
-# The status ImagePullBackOff means that a Pod couldn’t start on the assigned node. 
-# And the reason is that Kubernetes couldn’t pull the container image, hence the ImagePull part of the status. 
+# The status ImagePullBackOff means that a Pod couldn’t start on the assigned node.
+# And the reason is that Kubernetes couldn’t pull the container image, hence the ImagePull part of the status.
 
-# The second part, the BackOff means that Kubernetes will keep trying to pull the image. 
-# But with with an increasing delay (back-off). 
+# The second part, the BackOff means that Kubernetes will keep trying to pull the image.
+# But with with an increasing delay (back-off).
 # The back-off delay is exponential (10s, 20s, 40s, …) and is capped at five minutes.
 
 # Potential causes
 # Here are the most common ones:
 
-# Typo in the image name or tag. 
+# Typo in the image name or tag.
 # Image or tag doesn’t exist.
 # Your image registry requires authentication.
 # Since Docker Hub introduced rate limits, it could mean you hit a rate or download limit on your registry

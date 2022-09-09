@@ -53,7 +53,7 @@ _cheat()
       _cheat_complete_cheatsheets
       ;;
     --path|-p)
-      COMPREPLY=( $(compgen -W "$(cheat -d | cut -d':' -f1)" -- "$cur") )  
+      COMPREPLY=( $(compgen -W "$(cheat -d | cut -d':' -f1)" -- "$cur") )
       ;;
     --rm)
       _cheat_complete_cheatsheets

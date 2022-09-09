@@ -14,7 +14,7 @@ kubectl create configmap NAME --from-literal=Name=instance1 --from-literal=Type=
 
 
 # Creating a ServiceAccount on kubernetes to run pods on specific namespace
-# It is good to create a ServiceAccount from the security perspective. 
+# It is good to create a ServiceAccount from the security perspective.
 # To create a ServiceAccount You will need to create the following:
 # 1. The service account
 # 2. A Role for the service account
@@ -22,16 +22,16 @@ kubectl create configmap NAME --from-literal=Name=instance1 --from-literal=Type=
 # Create a specific namespace
 k create namespace NAME --dry-run=client --output yaml
 # Create a ServiceAccount
-k create serviceaccount NAME --namespace NAME --dry-run=client --output yaml 
+k create serviceaccount NAME --namespace NAME --dry-run=client --output yaml
 # Create a Role
 k create role NAME --namespace NAME --verb=create,get,list,watch --resource=pods --dry-run=client --output yaml
 # Create a RoleBinding
-k create rolebinding NAME --role=ROLE_NAME --namespace NAME --serviceaccount=<namespace_name>:<serviceaccount_name> --dry-run=client --output=yaml 
+k create rolebinding NAME --role=ROLE_NAME --namespace NAME --serviceaccount=<namespace_name>:<serviceaccount_name> --dry-run=client --output=yaml
 # When creating a new pod resource, use the name of serviceaccount created in 'spec.ServiceAccountName' field
 
 # ---------------------------------------------------------------------------------------------------------------------------------------
 # In kubernetes version 1.24 the ServiceAccount resource does not create a secret. The ServiceAccount will be mounted in the pod as a projected volume.
-# A projected volume is a volume that combines several existing volumes into one. 
+# A projected volume is a volume that combines several existing volumes into one.
 # Currently, the following types of volume sources can be included: secret, downwardAPI, configMap and serviceAccountToken
 # The Projected volume will contain a serviceAccountToken volume, usually at path /var/run/secrets/kubernetes.io/serviceaccount/token.
 # Projected Service Account tokens are JWT tokens. You can inspect a token on https://jwt.io

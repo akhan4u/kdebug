@@ -9,12 +9,12 @@ kubectl custom-cols -o qos-class pods -l app=inventory-optimization-staging
 kubectl custom-cols -o resources pods -l app=inventory-optimization-staging
 kubectl custom-cols -o events pods -n production-mi-crawl-system-production
 
-# annotations 
+# annotations
 # Lists pods or nodes annotations
 # NAME   ANNOTATIONS  STATUS
 
 # events
-# List pod or node events 
+# List pod or node events
 # NAME  EVENT   STATUS
 
 # images
