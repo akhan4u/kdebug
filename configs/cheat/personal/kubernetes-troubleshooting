@@ -1,0 +1,65 @@
+---
+syntax: yaml
+tags: [ troubleshooting, kubernetes, k8s ]
+---
+
+# Kubernetes: ImagePullBackOff!
+
+# The status ImagePullBackOff means that a Pod couldn’t start on the assigned node. 
+# And the reason is that Kubernetes couldn’t pull the container image, hence the ImagePull part of the status. 
+
+# The second part, the BackOff means that Kubernetes will keep trying to pull the image. 
+# But with with an increasing delay (back-off). 
+# The back-off delay is exponential (10s, 20s, 40s, …) and is capped at five minutes.
+
+# Potential causes
+# Here are the most common ones:
+
+# Typo in the image name or tag. 
+# Image or tag doesn’t exist.
+# Your image registry requires authentication.
+# Since Docker Hub introduced rate limits, it could mean you hit a rate or download limit on your registry
+
+
+# How can you troubleshoot the situation?
+
+# I try to pull from my local machine! back to the good old works on my machine setup!
+# Sometime I ssh into a node in the cluster and try to pull the Image from there.
+# In cases I am not using a registry (e.g. build in the cluster), I verify if the image exist on the particular node.
+# Another good thing to verify is that the image pull secret is present, correct and that your deployment or pod manifest is referencing this secret.
+
+```
+apiVersion: v1
+kind: Pod
+metadata:
+  name: private-reg
+spec:
+  containers:
+  - name: private-reg-container
+    image: <your-private-image>
+  imagePullSecrets:
+  - name: regcred
+```
+
+# Last thing I do during my troubleshooting sessions is to check the logs of kubelet and try to increase the log level to get more output if I need it.
+
+# REMINDER: set the log level to 0-4 as debug-level logs and 5-8 as trace-level logs.
+
+# -------------------------------------------
+# 6 Metrics To Watch for on Your K8s Cluster
+# -------------------------------------------
+
+# 1. CPU / Memory Requests vs Actual Usage
+# 2. CPU / Memory Limit vs Actual Usage
+# 3. Percentage of Unavailable Pods Out of Desired Replicas
+# 4. Desired Replicas Out of HPA Maximum Replicas
+# 5. Persistent Volume Utilization
+# 6. Nodes Failing Status Checks
+#    * Ready              - True if the node is healthy and ready to accept pods
+#    * DiskPressure       - True if the node’s disk is short of free storage
+#    * MemoryPressure     - True if the node is low on memory
+#    * PIDPressure        - True if there are too many processes running on the node
+#    * NetworkUnavailable - True if the network for the node is not correctly configured
+
+# Kubernetes OOM
+# If an application has a memory leak or tries to use more memory than a set limit amount, Kubernetes will terminate it with an “OOMKilled—Container limit reached” event and Exit Code 137. When you see a message like this, you have two choices: increase the limit for the pod or start debugging.

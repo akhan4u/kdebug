@@ -1,0 +1,23 @@
+{
+    "default_path": "/usr/local/bin",
+    "bins": {
+        "/usr/local/bin/kubescout": {
+            "path": "/usr/local/bin/kubescout",
+            "remote_name": "kubescout",
+            "version": "v0.1.16",
+            "hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "url": "https://github.com/ReallyLiri/kubescout",
+            "provider": "github",
+            "package_path": "kubescout"
+        },
+        "/usr/local/bin/stern": {
+            "path": "/usr/local/bin/stern",
+            "remote_name": "stern",
+            "version": "1.11.0",
+            "hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "url": "github.com/wercker/stern",
+            "provider": "",
+            "package_path": ""
+        }
+    }
+}

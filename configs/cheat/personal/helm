@@ -1,0 +1,28 @@
+---
+syntax: yaml
+tags: [kubernetes, k8s]
+---
+
+# Add a helm repository. Adds the repo details in '/$USER/.config/helm/repositories.yaml' file
+helm repo add <repo_name> <repo_url>
+
+# Pull helm chart and save locally. Saves 'chart-name.tgz' file
+helm pull <repo_url> <chart_name>
+
+# Install a helm chart with a path to an unpacked chart directory
+helm install <deployment_name> <./path_to_chart_dir> --dry-run
+
+# List helm releases from all namespaces or from specific namespace
+helm list --all-namespaces
+helm list --namespace <namespace_name>
+
+# Remove an Installed helm deployment
+helm uninstall <deployment_name> --namespace <namespace_name>
+
+# Deleting all releases in a specific k8s namespace
+helm ls --all --short --namespace $(NAMESPACE) | xargs -L1 helm delete --purge
+
+# List all default values of a helm chart
+helm inspect values <chart_name> > /tmp/chart_values.yml
+# Install with values file
+helm install <chart_name> -f /tmp/chart_values.yml

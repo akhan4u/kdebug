@@ -1,0 +1,51 @@
+---
+syntax: yaml
+tags: [ kubernetes, k8s ]
+---
+
+# Kubernetes Schema Validation
+
+# You can verify the schema by using the `dry-run` flag (`--dry-run=client/server`) when specifying the 
+# `kubectl create` or `kubectl apply` commands, which will perform the validation without applying Kubernetes resources to the cluster.
+kubectl apply --dry-run=client
+kubectl apply --dry-run=server
+
+# KubeLinter is a static analysis tool that checks Kubernetes YAML files and Helm charts to 
+# ensure the applications represented in them adhere to best practices. (https://github.com/stackrox/kube-linter)
+kube-linter lint pod.yaml
+
+# A FAST Kubernetes manifests validator, with support for Custom Resources! (https://github.com/yannh/kubeconform)
+# Validating a single, valid file
+kubeconform fixtures/valid.yaml
+# Passing manifests via Stdin
+cat fixtures/valid.yaml  | kubeconform -summary
+
+# kubeval is a tool for validating a Kubernetes YAML or JSON configuration file.  (https://github.com/instrumenta/kubeval)
+# It does so using schemas generated from the Kubernetes OpenAPI specification, and therefore 
+# can validate schemas for multiple versions of Kubernetes.
+# Kubeval is a more popular project than kubeconform
+kubeval my-invalid-rc.yaml
+
+# Prevent Kubernetes misconfigurations from reaching production (again triumph )! (https://github.com/datreeio/datree)
+# Datree is a CLI tool to ensure K8s manifests and Helm charts follow best practices as well as your organization’s policies.
+datree test <k8s-manifest-file>
+# Right now, there are 30 battle-tested rules for you to choose from. (https://hub.datree.io/built-in-rules#containers)
+# The rules cover different Kubernetes resources and use cases:
+
+# Scout for alarming issues across your Kubernetes clusters (https://github.com/ReallyLiri/kubescout)
+kubescout --kubeconfig /root/.kube/config --name staging-cluster
+kubescout --exclude-ns kube-system
+kubescout --include-ns default,test,prod
+kubescout -n default -c aws-cluster
+
+# Get events of a specific namespace quickly
+kubescout -n production-mi-crawl-system-production
+
+# Setup K3S on OracleCloud VM
+# System Requirements (https://rancher.com/docs/k3s/latest/en/installation/installation-requirements/)
+RAM: 512MB Minimum (we recommend at least 1GB) # Setup Swapfile to increase memory on instance
+CPU: 1 Minimum
+# Install K3S with below command (https://rancher.com/docs/k3s/latest/en/installation/install-options/server-config/#networking)
+curl -sfL https://get.k3s.io | sh -s - --tls-san 152.67.3.134
+# Flush Iptables to access 6443
+iptables -F

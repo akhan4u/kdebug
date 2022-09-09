@@ -1,0 +1,54 @@
+---
+syntax: yaml
+tags: [ kubernetes, k8s ]
+---
+
+# a kubectl plugin that help you customize output columns like a boss ! (https://github.com/webofmars/kubectl-custom-cols)
+# templates are placed in /root/.krew/store/custom-cols/v0.0.5/templates
+kubectl custom-cols -o qos-class pods -l app=inventory-optimization-staging
+kubectl custom-cols -o resources pods -l app=inventory-optimization-staging
+kubectl custom-cols -o events pods -n production-mi-crawl-system-production
+
+# annotations 
+# Lists pods or nodes annotations
+# NAME   ANNOTATIONS  STATUS
+
+# events
+# List pod or node events 
+# NAME  EVENT   STATUS
+
+# images
+# List pod container images
+# NAME  CONTAINER_IMAGE
+
+# labels
+# List pod or node labels
+# NAME  LABELS
+
+# limits
+# List pod limits
+# NAME  LIMITS  STATUS
+
+# node-capacity
+# List Kubernetes cluster node capacity
+# NAME  CPU   MEMORY    ALLOCATABLE_CPU   ALLOCATABLE_MEM   ALLOCATABLE_PODS   CONTAINER_RUNTIME   KUBELET_VERSION   AMI_ID
+
+# node-pod
+# List node to pod mapping
+# NODE  NAMESPACE   POD_NAME  CONTAINERS   STATUS
+
+# node-specs
+# List Kubernetes node specifications
+# NAME  CPU  MEMORY  IP  ARCH   INSTANCE  REGION  ZONE  CAPACITY   NODE_GROUP
+
+# requests
+# List Pod requests
+# POD_NAME  REQUESTS  STATUS
+
+# resources
+# List Pod resources
+# POD_NAME  REQUESTS  LIMITS  QOS_CLASS   STATUS
+
+# tolerations
+# List Pod Tolerations
+# POD_NAME  TOLERATIONS

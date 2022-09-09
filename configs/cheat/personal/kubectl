@@ -1,0 +1,164 @@
+---
+syntax: yaml
+tags: [ kubernetes, k8s ]
+---
+
+# Kubernetes learning resources
+# 1. KataCoda (https://www.katacoda.com/loodse/courses/kubernetes)
+# 2. Learn kubernetes by Example (https://www.kubernetesbyexample.com/)
+
+# Display list of all available commands
+kubectl -h
+
+# Display an explanation of a specific command
+kubectl command_name -h
+
+# Display complete list of supported resources
+kubectl api-resources
+kubectl api-resources --namespaced=false
+
+# Display an explanation of a specific reource
+kubectl explain resource_name
+
+# Display an explanation of a specific field of resource
+kubectl explain resource_name.field_name
+
+# Display list of global command-line options
+kubectl options
+
+# Setup Kubectl autocomplete in bash(to use press Tab)
+source <(kubectl completion bash)
+
+# Display all resources in all namespaces
+kubectl get all -A
+
+# Deploy a resource from a manifest file
+kubectl apply -f deployment.yaml
+
+# Connect to a pod using kubectl
+kubectl exec -it <pod_name> /bin/bash
+
+# Scale the deployment
+kubectl scale deploy <deployment_name> --replicas=2
+
+# Set Context for default namespace
+# Check current default namespace
+kubectl config view | grep namespace:
+# Set context for default namespace with kubectl command
+kubectl config set-context --current --namespace=<namespace>
+
+# List all pods that are not Running
+# Pod Lifecycle States:
+#   Pending
+#   Running
+#   Succeeded
+#   Failed
+#   Unknown
+kubectl get pods --field-selector=status.phase!=Running
+
+# List all deployments with container_image/namespace/replica_count sorted by replica count
+kubectl get deploy -o=custom-columns='NAME:.metadata.name, REPLICAS:.spec.replicas, NAMESPACE:.metadata.namespace, IMAGE:.spec.template.spec.containers[].image' --sort-by=.spec.replicas
+# Specific deployments only
+kubectl get deploy -o=custom-columns='NAME:.metadata.name, REPLICAS:.spec.replicas, NAMESPACE:.metadata.namespace, IMAGE:.spec.template.spec.containers[].image' --sort-by=.spec.replicas <deployment_name>
+
+# List the container images for the deployments
+kubectl get deploy -o=custom-columns='NAME:.metadata.name, IMAGE:.spec.template.spec.containers[].image'
+
+# Kuberentes how to check if I am admin?
+# If running all the following commands returns yes, you are most likely admin
+kubectl auth can-i "*" "*" --all-namespaces
+kubectl auth can-i "*" namespace
+kubectl auth can-i "*" clusterrole
+kubectl auth can-i "*" crd
+
+# Get IP for a pod
+kubectl get pods nginx -o wide
+#OR
+kubectl get pods nginx -o jsonpath='{.status.podIP}'
+
+# List pods Sorted by Restart Count
+kubectl get pods --sort-by='.status.containerStatuses[0].restartCount'
+
+# Get pods and show labels
+kubectl get pods --show-labels
+
+# Mark a node as unschedulable
+kubectl cordon node <node_name>
+
+# Mark node as schedulable
+kubectl uncordon node <node_name>
+
+# Drain a node in preparation for maintenance
+kubectl drain node <node_name>
+
+# Update the taints on one or more nodes
+kubectl taint node <node_name>
+
+# Check Endpoints (HOSTIP:PORT) of Applications
+kubectl get ep
+
+# Delete Everything in a specific namespace
+kubectl delete all --all -n $NAMESPACE
+
+# Delete a specific resource forcefully
+kubectl delete pods/nginx --grace-period=0 --force
+
+# Accessing logs from Init Containers
+# Pass the Init Container name along with the Pod name to access its logs
+kubectl logs <pod-name> -c <init-container>
+
+# Access logs of a previously crashed container
+kubectl logs --previous <pod_name>
+
+# Delete all pods starting name fluentd in particular namespace
+kubectl delete pods $(kubectl get pods --namespace $NAMESPACE | grep fluentd | awk '{print $1}') --namespace $NAMESPACE
+
+# Delete all ingresses in a particular namespace
+kubectl delete ing $(kubectl get ing --namespace $NAMESPACE | awk '{print $1}') --namespace $NAMESPACE
+
+# Delete multiple pods with Same labels
+kubectl delete pods -l labelName=labelValue --namespace $NAMESPACE
+
+# Checking Kuberentes API calls using kubectl
+kubectl get pods -v=8
+
+# Rolling restart a deployment
+kubectl rollout restart deployment/datadog-cluster-agent -n default
+kubectl rollout restart daemonset/datadog-agent
+
+# Rollback a previous deployment
+kubectl rollout undo deployment/<deployment name>
+
+# list all pods and its nodes in a specific namespace
+kubectl get pod -o=custom-columns=NAME:.metadata.name,STATUS:.status.phase,NODE:.spec.nodeName -n default
+# OR
+kubectl get pod -o=custom-columns=NODE:.spec.nodeName,NAME:.metadata.name -n default
+
+# Get all pods running on a specific EC2 Instance
+kubectl get pods --all-namespaces -o wide --field-selector spec.nodeName=<instance-hostname>
+
+# How to scale down a daemonset in Kubernetes?
+kubectl -n NAMESPACE patch daemonset DAEMONSET_NAME -p '{"spec": {"template": {"spec": {"nodeSelector": {"non-existing": "true"}}}}}'
+# How to scale back up?
+kubectl -n NAMESPACE patch daemonset DAEMONSET_NAME --type json -p='[{"op": "remove", "path": "/spec/template/spec/nodeSelector/non-existing"}]'
+
+# List recent events for all resources in the system (Warning only)
+kubectl get events --field-selector type=Warning
+# Filter out normal events from a list of events
+kubectl get events --field-selector type!=Normal
+# List events but exclude Pod events
+kubectl get events --field-selector involvedObject.kind!=Pod
+# List events sorted by timestamp
+kubectl get events --sort-by=.metadata.creationTimestamp
+
+# Get the documentation of the resource and its fields (all levels)
+kubectl explain pod --recursive
+
+# Find resources that are not deleted in a stuck namespaces (in terminated state)
+kubectl api-resources --verbs=list --namespaced -o name | xargs -n 1 kubectl get --show-kind --ignore-not-found -n NAMESPACE
+
+# Patch PVC to get it deleted
+kubectl patch pvc {PVC_NAME} -p '{"metadata":{"finalizers":null}}'
+
+# To mark the storageclass as non-default
+kubectl patch storageclass {STORAGE_CLASS_NAME} -p '{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"false"}}}'

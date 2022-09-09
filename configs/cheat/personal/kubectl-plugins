@@ -1,0 +1,121 @@
+---
+syntax: yaml
+tags: [ kubernetes, k8s ]
+---
+
+# Neat (https://github.com/itaysk/kubectl-neat)
+# Clean up Kubernetes yaml and json output to make it readable
+
+# Install it
+kubectl krew install neat
+
+kubectl get pod mypod -o yaml | kubectl neat
+
+kubectl get pod mypod -oyaml | kubectl neat -o json
+
+kubectl neat -f - <./my-pod.json
+
+kubectl neat -f ./my-pod.json
+
+kubectl neat -f ./my-pod.json --output yaml
+
+kubectl neat get -- pod mypod -oyaml
+kubectl neat get -- svc -n default myservice --output json
+
+# Kubecapacity (https://github.com/robscott/kube-capacity)
+# A simple CLI that provides an overview of the resource requests, limits, and utilization in a Kubernetes cluster
+
+# Install it
+kubectl krew install resource-capacity
+
+# By default, kube-capacity will output a list of nodes with the total CPU and Memory resource requests and limits for all the pods running on them.
+kube-capacity
+
+# For more detailed output, kube-capacity can include pods in the output
+kube-capacity --pods
+# Including utilization
+kube-capacity --pods --util
+
+# When -u or --util are passed to kube-capacity, it will include resource utilization information that looks like this
+kube-capacity --util
+
+# Displaying Available Resources
+kube-capacity --available
+
+# Sorting
+kube-capacity --util --sort cpu.util
+
+# Displaying Pod Count
+kube-capacity --pod-count
+
+# Filtering by labels
+kube-capacity --pod-labels app=nginx
+kube-capacity --namespace default
+kube-capacity --namespace-labels team=api
+kube-capacity --node-labels kubernetes.io/role=node
+
+# Kubectl-tree (https://github.com/ahmetb/kubectl-tree)
+
+# Install it
+kubectl krew install tree
+
+kubectl tree deployment nginx
+
+
+# Ketall (https://github.com/corneliusweig/ketall)
+# Kubectl plugin to show really all kubernetes resources
+
+# Install it
+kubectl krew install get-all
+
+# excluding events (this is hardly ever useful)
+ketall
+
+# including events
+ketall --exclude=
+
+# created since last 1 minute
+ketall --since 1m
+
+# in default namespace
+ketall --namespace=default
+
+# at cluster level
+ketall --only-scope=cluster
+
+# Count resources by kind (https://github.com/chenjiandongx/kubectl-count)
+kubectl count pods,svc,deploy -n staging-mi-crawl-system-staging -oy
+kubectl count pods,svc,deploy -n staging-mi-crawl-system-staging
+# Count of service,deamonset,replicaset in all namespaces
+kubectl count service,ds,rs -oy -A
+
+# Filter Kubernetes resources by matching their names
+# (https://github.com/guessi/kubectl-grep)
+kubectl grep pods "keyword"
+kubectl grep pods "keyword" -o wide
+kubectl grep pods "keyword" -n "my-ns"
+kubectl grep pods "keyword" -A  # ALL Namespaces
+kubectl grep pods "keyword" -l "key=value"
+kubectl grep pods "keyword" -l "key=value" -n "my-ns"
+kubectl grep pods "keyword" -l "key=value" -A
+
+# kubectl plugin for retrieving resource example YAMLs. (https://github.com/seredot/kubectl-example)
+kubectl example cm      # ConfigMap
+kubectl example rs      # ReplicaSet
+kubectl example secret  # Secret
+kubectl example svc     # Service
+
+# Get kubernetes cluster details like cluster version, number of nodes, namespaces
+# (https://github.com/kubectl-plus/kcf)
+kubernetes fleet
+
+# Kubectl plugin to find and report outdated images running in a Kubernetes cluster
+# https://github.com/replicatedhq/outdated
+kubectl outdated
+
+# Exec into node via kubectl (https://github.com/kvaps/kubectl-node-shell)
+# Get cluster node information
+kubectl get nodes
+kubectl-node_shell <node-name>
+# Also you can run the following script to get ssh session on node (Works on CoralProd cluster)
+bash -c "$(curl -sSL https://raw.githubusercontent.com/AverageMarcus/kube-ssh/master/ssh.sh)"
