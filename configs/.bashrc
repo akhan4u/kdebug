@@ -45,6 +45,3 @@ alias cat='bat'
 alias vi='vim'
 alias ls='exa'
 alias 1linejson='jq -c . '
-
-# GITHUB AUTH TOKEN FOR AUTHENTICATED REQUESTS (APPLICATION: BIN) (REMOVING GITHUB RATE LIMITS)
-export GITHUB_AUTH_TOKEN=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
