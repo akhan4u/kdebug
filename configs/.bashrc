@@ -26,6 +26,11 @@ alias 1linejson='jq -c . '
 # USEFUL ALIAS AND FUNCTIONS FOR KUBECTL
 alias k='kubectl'
 
+# FUNCTION FOR LISTING ALL ALIASES IN COLUMNAR FORMAT
+all(){
+        grep ^alias ~/.bashrc | awk '{print $2}' | awk '-F=' '{print $1}' | sort | column
+}
+
 kns(){
     kubectl get ns
 }
