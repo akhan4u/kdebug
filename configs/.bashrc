@@ -8,7 +8,7 @@
 EOF
 
 # PROMPT STATEMENT ONE
-PS1='\[\e]0;\u@\h: \w\a\]${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]: \[\033[01;34m\]\w\[\033[00m\] $ '
+PS1="\[\033[01;32m\]$1\[\033[00m\] : \[\033[01;34m\]\w\[\033[00m\] $ "
 
 # BAT
 export BAT_PAGER='less -RF'
@@ -31,6 +31,7 @@ alias cat='bat'
 alias vi='vim'
 alias ls='exa'
 alias 1linejson='jq -c . '
+export STORE_FILEPATH=/root/.kube/kube-scout.store.json
 
 # USEFUL ALIAS AND FUNCTIONS FOR KUBECTL
 alias k='kubectl'
@@ -48,6 +49,7 @@ kn(){
     namespace=$1
     export KUBE_NAMESPACE="${1}"
     kubectl config set-context --current --namespace="${namespace}"
+    export PS1="\[\033[01;32m\]$1\[\033[00m\] : \[\033[01;34m\]\w\[\033[00m\] $ "
 }
 
 kc(){
