@@ -6,12 +6,12 @@ formatter: terminal16m
 pager: /usr/bin/less -FR
 cheatpaths:
   - name: community
-    path: /root/.config/cheat/cheatsheets/community
+    path: /root/.config/bin/cheatsheets/community
     tags:
       - community
     readonly: true
   - name: personal
-    path: /root/.config/cheat/cheatsheets/personal
+    path: /root/.config/bin/cheatsheets/personal
     tags:
       - personal
     readonly: false

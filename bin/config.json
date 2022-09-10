@@ -1,5 +1,5 @@
 {
-    "default_path": "/usr/local/bin",
+    "default_path": "/root/.custom_bin/",
     "bins": {
         "/usr/local/bin/kubescout": {
             "path": "/usr/local/bin/kubescout",

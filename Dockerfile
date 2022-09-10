@@ -13,18 +13,14 @@ RUN /bin/sh -c set -ex \
     tzdata \
     util-linux \
     vim
-COPY bin/ /usr/local/bin/
-COPY bin/config.json /root/.bin/
+COPY bin/ configs/ /root/.config/bin/
 ADD bin/.krew /root/.krew
 ADD configs/.fzf /root/.fzf
-RUN mkdir -p /root/.config/cheat/cheatsheets/personal /root/.kube && \
-        cd /root/.config/cheat/cheatsheets/ && \
+RUN mkdir -p /root/.kube && \
+        cd /root/.config/bin/cheatsheets/ && \
             git clone https://github.com/cheat/cheatsheets.git community && \
+                rm -r /root/.config/bin/.krew && rm -r /root/.config/bin/.fzf && \
                 cat '/usr/share/zoneinfo/Asia/Calcutta' > /etc/localtime
-COPY configs/.bashrc configs/.fzf.bash \
-        configs/.cheat-autocompletion configs/.bash-completion \
-            configs/.bat_config /root/
-COPY configs/cheat/conf.yaml /root/.config/cheat/conf.yml
-COPY configs/cheat/personal /root/.config/cheat/cheatsheets/personal
+COPY configs/.bashrc /root/
 WORKDIR /root
 CMD ["bash"]
