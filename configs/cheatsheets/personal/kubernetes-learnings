@@ -1,0 +1,70 @@
+---
+syntax: yaml
+tags: [kubernetes, k8s]
+---
+# Creating a resource manifest by using dry-run flag with kubectl
+kubectl run nginx --image=nginx --dry-run=client --output yaml
+kubectl create namespace NAME --dry-run=client --output yaml
+kubectl create configmap NAME --from-literal=Name=instance1 --from-literal=Type=on-demand --dry-run=client --output yaml
+
+# 	                    sends data to server/cluster	perform change on server/cluster	validation by the server/cluster
+# --dry-run client	                no	                                no	                                no
+# --dry-run server	                yes	                                no	                                yes
+# --dry-run none	                yes	                                yes	                                yes
+
+
+# Creating a ServiceAccount on kubernetes to run pods on specific namespace
+# It is good to create a ServiceAccount from the security perspective.
+# To create a ServiceAccount You will need to create the following:
+# 1. The service account
+# 2. A Role for the service account
+# 3. A RoleBinding to bind the Role so you can use it on the service account
+# Create a specific namespace
+k create namespace NAME --dry-run=client --output yaml
+# Create a ServiceAccount
+k create serviceaccount NAME --namespace NAME --dry-run=client --output yaml
+# Create a Role
+k create role NAME --namespace NAME --verb=create,get,list,watch --resource=pods --dry-run=client --output yaml
+# Create a RoleBinding
+k create rolebinding NAME --role=ROLE_NAME --namespace NAME --serviceaccount=<namespace_name>:<serviceaccount_name> --dry-run=client --output=yaml
+# When creating a new pod resource, use the name of serviceaccount created in 'spec.ServiceAccountName' field
+
+# ---------------------------------------------------------------------------------------------------------------------------------------
+# In kubernetes version 1.24 the ServiceAccount resource does not create a secret. The ServiceAccount will be mounted in the pod as a projected volume.
+# A projected volume is a volume that combines several existing volumes into one.
+# Currently, the following types of volume sources can be included: secret, downwardAPI, configMap and serviceAccountToken
+# The Projected volume will contain a serviceAccountToken volume, usually at path /var/run/secrets/kubernetes.io/serviceaccount/token.
+# Projected Service Account tokens are JWT tokens. You can inspect a token on https://jwt.io
+
+# The main benefit of creating a projected volume instead of token is that - Tokens created with a Secret don't expire. Ever.
+
+# Generating Secrets for Service Account with Kubernetes 1.24 or greater 💡
+# You can still revert to the old behaviour if you create the service account and attach it to a secret using an annotation.
+
+# apiVersion: v1
+# kind: Secret
+# type: kubernetes.io/service-account-token
+# metadata:
+#   name: test
+#   annotations:
+#     kubernetes.io/service-account.name: "test"
+
+# If you inspect the token added to the secret on https://jwt.io you'll notice the token has no expiry.
+# ---------------------------------------------------------------------------------------------------------------------------------------
+
+# Kubernetes Interview QnA
+# https://github.com/mamun001/kubernetes_interview_questions/blob/main/kubernetes_interview_questions.md
+
+# POD Requests and Limits
+# Requests helps schedular to decide the node based on defined resources (cpu/mem)
+# Request/limits are not absolute boundaries!
+# CPU usage can be "throttled" (reduced)
+# Memory cannot be "throttled" => incompressible
+
+# Access modes for persistent volume
+# accessModes:
+#   - ReadWriteOnce (RWO)
+#   - ReadWriteMany (RWX)
+#   - ReadOnlyMany  (ROX)
+# NOTE: 1. A Storage system may not support all types of accessModes
+#       2. A persistent volume can only be mounted using one access mode, even if it supports multiple

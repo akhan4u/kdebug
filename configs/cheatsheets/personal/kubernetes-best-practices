@@ -1,0 +1,54 @@
+---
+syntax: yaml
+tags: [ best-practices, kubernetes, k8s ]
+---
+
+# Do you specify requests & limits for your Kubernetes pods?
+
+Here is why it's very important.
+
+When deploying a pod, kubernetes assigns a QoS class to pods based on the requests and limit parameters.
+
+Let's understand Kubernetes Pod Quality of service. (QoS).
+
+Kubernetes pod scheduling is based on the request value to ensure the node has the resources to run the pod.
+
+However, a node can be overcommitted if pods try to utilize all its limit ranges more than the node's capacity.
+
+Overcommitment = sum of resource request/limits > node capacity
+
+When pods on the node try to utilize resources that are not available on the node, kubernetes uses the QoS class to determine which pod to kill first.
+
+There are three Pod QoS.
+
+1️⃣   Best effort
+
+Your pod gets the best-effort class if you do not specify any CPU/Memory requests and limits. Best-effort pods are low-priority pods. The best-effort pods get killed first if the node runs out of resources.
+
+2️⃣   Burstable
+
+If you set the request lower than the limit, the pod gets burstable class. If the node runs out of resources, burstable pods get killed if no best effort pods are available.
+
+3️⃣   Guaranteed
+
+The pod gets a guaranteed class if the request and limit values are the same. It is considered the highest priority pod and gets killed if there are no best-effort or burstable pods.
+
+# Check the POD Qos-class with kubectl custom plugin (custom-cols)
+kubectl custom-cols -o qos-class pod  -n NAMESPACE
+
+# Kubernetes best practices every developer should know:
+1. Use namespaces
+2. Use readiness and liveness probes
+3. Use resource requests and limits
+4. Deploy your Pods as part of a Deployment, DaemonSet, ReplicaSet or StatefulSet across nodes.
+5. Use multiple nodes
+6. Use Role-based access control (RBAC)
+7. Host your Kubernetes cluster externally (use a cloud service)
+8. Upgrade your Kubernetes version
+9. Monitor your cluster resources and audit policy logs
+10. Use a version control system
+11. Use a Git-based workflow (GitOps)
+12. Reduce the size of your containers
+13. Organize your objects with labels
+14. Use network policies
+15. Use a firewall

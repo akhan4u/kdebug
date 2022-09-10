@@ -1,0 +1,28 @@
+---
+syntax: yaml
+tags: [ kubernetes, k8s ]
+---
+
+# Troubleshooting kubernetes workload issues
+
+# Workloads Won’t Run
+kubectl get events --field-selector type=Warning --all-namespaces
+kubectl get nodes -o wide --label-columns topology.kubernetes.io/zone
+kubectl resource-capacity --pods --util --sort cpu.util
+kubectl get all --show-labels
+kubectl lineage pod ${POD}
+kail -l ${LABEL}
+
+# Cannot access workloads
+kubectl get service -o wide
+kubectl get endpointslices -o wide
+kubectl port-forward deploy $DEPLOYMENT $LOCAL_PORT:$POD_PORT
+
+# Debug Specific Pods
+kubectl debug -it --image=debian $POD
+kubectl label pod $POD app-
+kubectl blame pod
+
+# if running Kubernetes 1.23 or later we can make use of kubectl debug to potentially investigate these problem pods.
+kubectl debug -it --image bash my-broken-pod
+# This injects an Ephemeral Container into our chosen pod that can then run alongside our broken container.

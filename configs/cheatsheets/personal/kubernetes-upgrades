@@ -1,0 +1,17 @@
+---
+syntax: yaml
+tags: [k8s, kubernetes]
+---
+
+# Upgrading EKS Version 💡
+
+# Upgrades using eksctl are easy and enabling pod disruption budgets let you do the upgrades without any downtime.
+# Do remember to check for any removed apis in the target cluster version (k8s 1.22 has removed a lot of apis) before you upgrade.
+# An OpenSource project to check ApiVersion compatibility and provide Migration path for Kubernetes objects when upgrading Kubernetes to latest versions.
+# https://github.com/devtron-labs/silver-surfer
+# Select a Kubernetes project
+export KUBECONFIG='path-to-kubeconfig'
+# Show deprecated api's against all resource kinds
+kubedd --target-kubernetes-version 1.20
+# Show deprecated api's against current kubernetes version (limited to specific object kind: ingress)
+kubedd --target-kubernetes-version 1.20 --select-kinds ingress

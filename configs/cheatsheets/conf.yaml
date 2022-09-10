@@ -1,0 +1,17 @@
+---
+editor: /usr/bin/vim
+colorize: true
+style: monokai
+formatter: terminal16m
+pager: /usr/bin/less -FR
+cheatpaths:
+  - name: community
+    path: /root/.config/configs/cheatsheets/community
+    tags:
+      - community
+    readonly: true
+  - name: personal
+    path: /root/.config/configs/cheatsheets/personal
+    tags:
+      - personal
+    readonly: false
