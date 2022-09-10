@@ -19,7 +19,7 @@ ADD configs/.fzf /root/.fzf
 RUN mkdir -p /root/.kube && \
         cd /root/.config/bin/cheatsheets/ && \
             git clone https://github.com/cheat/cheatsheets.git community && \
-                rm -r /root/.config/bin/.krew && rm -r /root/.config/bin/.fzf && \
+                rm -r /root/.config/bin/.krew && rm -r /root/.config/bin/.fzf && rm -r /root/.config/bin/.bashrc && \
                 cat '/usr/share/zoneinfo/Asia/Calcutta' > /etc/localtime
 COPY configs/.bashrc /root/
 WORKDIR /root
