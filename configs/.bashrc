@@ -1,24 +1,34 @@
-# SET PROMPT
+# PROMPT STATEMENT ONE
 PS1='\[\e]0;\u@\h: \w\a\]${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]: \[\033[01;34m\]\w\[\033[00m\] $ '
 
-# SET KREW PATH
-export PATH="${PATH}:${HOME}/.krew/bin:${HOME}/.config/bin/"
+# BASH AUTOCOMPLETION
+source /root/.config/bin/.bash-completion
 
-# TZ TIMEZONE
-# export TZ_LIST='UTC;America/Chicago;America/Los_Angeles;America/New_York, America/New_York'
-export TZ_LIST='UTC;America/New_York, America/New_York'
-
-# FZF
-export FZF_DEFAULT_OPTS='--height 50% --color=dark --layout=reverse --border'
-[ -f ~/.config/bin/.fzf.bash ] && source /root/.config/bin/.fzf.bash
+# BAT
+export BAT_CONFIG_PATH=/root/.config/bin/.bat_config
+export BAT_PAGER='less -RF'
 
 # CHEAT AUTOCOMPLETION WITH FZF
 export CHEAT_CONFIG_PATH="/root/.config/bin/cheatsheets/conf.yaml"
 export CHEAT_USE_FZF=true
 source /root/.config/bin/.cheat-autocompletion
 
-# BASH AUTOCOMPLETION
-source /root/.config/bin/.bash-completion
+# FZF
+export FZF_DEFAULT_OPTS='--height 50% --color=dark --layout=reverse --border'
+[ -f ~/.config/bin/.fzf.bash ] && source /root/.config/bin/.fzf.bash
+
+# KREW PATH
+export PATH="${PATH}:${HOME}/.krew/bin:${HOME}/.config/bin/"
+
+# TZ TIMEZONE
+# export TZ_LIST='UTC;America/Chicago;America/Los_Angeles;America/New_York, America/New_York'
+export TZ_LIST='UTC;America/New_York, America/New_York'
+
+# OTHERS
+alias cat='bat'
+alias vi='vim'
+alias ls='exa'
+alias 1linejson='jq -c . '
 
 # USEFUL ALIAS AND FUNCTIONS FOR KUBECTL
 alias k='kubectl'
@@ -36,13 +46,3 @@ kn(){
 kc(){
     kubectl config get-contexts
 }
-
-# BAT
-export BAT_CONFIG_PATH=/root/.config/bin/.bat_config
-export BAT_PAGER='less -RF'
-
-# OTHERS
-alias cat='bat'
-alias vi='vim'
-alias ls='exa'
-alias 1linejson='jq -c . '
