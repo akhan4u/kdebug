@@ -1,0 +1,2 @@
+NAME    CPU     MEMORY     IP  ARCH    INSTANCE   ZONE    CAPACITY   NODE_GROUP   CREATE_DATE
+.metadata.name  .status.capacity.cpu    .status.capacity.memory     .status.addresses[?(@.type=="InternalIP")].address  .status.nodeInfo.architecture   .metadata.labels.node\.kubernetes\.io/instance-type     .metadata.labels.topology\.kubernetes\.io/zone  .metadata.labels.eks\.amazonaws\.com/capacityType   .metadata.labels.eks\.amazonaws\.com/nodegroup .metadata.creationTimestamp

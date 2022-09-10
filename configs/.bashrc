@@ -1,3 +1,12 @@
+/bin/cat << EOF
+
+ /\  |__/ |__|  /\  |\ |
+/~~\ |  \ |  | /~~\ | \|
+
+    Authorized access only!
+
+EOF
+
 # PROMPT STATEMENT ONE
 PS1='\[\e]0;\u@\h: \w\a\]${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]: \[\033[01;34m\]\w\[\033[00m\] $ '
 
@@ -47,7 +56,6 @@ kc(){
 
 init(){
     unzip /root/.cache/all_config.zip -d /root/.config
-    mv /root/.config/bin/.krew /root
     mv /root/.config/configs/.fzf /root
     cd /root/.config/configs/cheatsheets/ && git clone https://github.com/cheat/cheatsheets.git community && cd
     # CONF LOCATION
@@ -57,4 +65,18 @@ init(){
     source /root/.config/configs/.bash-completion
     source /root/.config/configs/.cheat-autocompletion
     [ -f ~/.config/configs/.fzf.bash ] && source /root/.config/configs/.fzf.bash
+
+    # INSTALL KREW
+    cd "$(mktemp -d)" &&
+    OS="$(uname | tr '[:upper:]' '[:lower:]')" &&
+    ARCH="$(uname -m | sed -e 's/x86_64/amd64/' -e 's/\(arm\)\(64\)\?.*/\1\2/' -e 's/aarch64$/arm64/')" &&
+    KREW="krew-${OS}_${ARCH}" &&
+    curl -fsSLO "https://github.com/kubernetes-sigs/krew/releases/latest/download/${KREW}.tar.gz" &&
+    tar zxvf "${KREW}.tar.gz" &&
+    ./"${KREW}" install krew
+
+    # INSTALL SOME KREW PLUGINS
+    k krew install fleet example explore neat custom-cols && cd
+    cp -rpf /root/.config/configs/templates /root/.krew/store/custom-cols/v0.0.5/
 }
+time init &> ${HOME}/.init.logs
