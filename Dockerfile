@@ -7,20 +7,15 @@ RUN /bin/sh -c set -ex \
     curl \
     git \
     jq \
+    unzip \
     libc6-compat \
     openssl \
     perl \
     tzdata \
     util-linux \
     vim
-COPY bin/ configs/ /root/.config/bin/
-ADD bin/.krew /root/.krew
-ADD configs/.fzf /root/.fzf
-RUN mkdir -p /root/.kube && \
-        cd /root/.config/bin/cheatsheets/ && \
-            git clone https://github.com/cheat/cheatsheets.git community && \
-                rm -r /root/.config/bin/.krew && rm -r /root/.config/bin/.fzf && rm -r /root/.config/bin/.bashrc && \
-                cat '/usr/share/zoneinfo/Asia/Calcutta' > /etc/localtime
+COPY all_config.zip /root/.cache/
+RUN mkdir -p /root/.kube && cat '/usr/share/zoneinfo/Asia/Calcutta' > /etc/localtime
 COPY configs/.bashrc /root/
 WORKDIR /root
 CMD ["bash"]

@@ -1,21 +1,14 @@
 # PROMPT STATEMENT ONE
 PS1='\[\e]0;\u@\h: \w\a\]${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]: \[\033[01;34m\]\w\[\033[00m\] $ '
 
-# BASH AUTOCOMPLETION
-source /root/.config/bin/.bash-completion
-
 # BAT
-export BAT_CONFIG_PATH=/root/.config/bin/.bat_config
 export BAT_PAGER='less -RF'
 
-# CHEAT AUTOCOMPLETION WITH FZF
-export CHEAT_CONFIG_PATH="/root/.config/bin/cheatsheets/conf.yaml"
+# CHEAT WITH FZF
 export CHEAT_USE_FZF=true
-source /root/.config/bin/.cheat-autocompletion
 
 # FZF
 export FZF_DEFAULT_OPTS='--height 50% --color=dark --layout=reverse --border'
-[ -f ~/.config/bin/.fzf.bash ] && source /root/.config/bin/.fzf.bash
 
 # KREW PATH
 export PATH="${PATH}:${HOME}/.krew/bin:${HOME}/.config/bin/"
@@ -45,4 +38,18 @@ kn(){
 
 kc(){
     kubectl config get-contexts
+}
+
+init(){
+    unzip /root/.cache/all_config.zip -d /root/.config
+    mv /root/.config/bin/.krew /root
+    mv /root/.config/configs/.fzf /root
+    cd /root/.config/configs/cheatsheets/ && git clone https://github.com/cheat/cheatsheets.git community && cd
+    # CONF LOCATION
+    export CHEAT_CONFIG_PATH="/root/.config/configs/cheatsheets/conf.yaml"
+    export BAT_CONFIG_PATH=/root/.config/configs/.bat_config
+    # AUTOCOMPLETION's
+    source /root/.config/configs/.bash-completion
+    source /root/.config/configs/.cheat-autocompletion
+    [ -f ~/.config/configs/.fzf.bash ] && source /root/.config/configs/.fzf.bash
 }
