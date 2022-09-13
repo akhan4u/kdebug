@@ -64,7 +64,7 @@ kget ()
         echo "Get Details of any kubernetes object";
         echo "Usage: kget <resource_kind> <resource_name>";
     else
-        kubectl get $kind $name -o yaml | kubectl neat | yh;
+        kubectl get $kind $name -o yaml | kubectl neat | grep -v "^$" | yh;
     fi
 }
 
