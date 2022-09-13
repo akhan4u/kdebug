@@ -56,6 +56,18 @@ kc(){
     kubectl config get-contexts
 }
 
+kget ()
+{
+    kind=${1};
+    name=${2};
+    if [[ -z $@ ]]; then
+        echo "Get Details of any kubernetes object";
+        echo "Usage: kget <resource_kind> <resource_name>";
+    else
+        kubectl get $kind $name -o yaml | kubectl neat | yh;
+    fi
+}
+
 init(){
     unzip /root/.cache/all_config.zip -d /root/.config
     mv /root/.config/configs/.fzf /root
